@@ -3,7 +3,6 @@
 layout(local_size_x = 8, local_size_y = 4, local_size_z = 1) in;
 layout(rgba32f, binding = 0) uniform writeonly image2D out_image;
 
-
 // Kind of SDF to render based on selection from the GUI
 #define KIND_TORUS 0
 #define KIND_CUBES 1
@@ -87,7 +86,6 @@ float fire_spiral(vec3 p)
 }
 
 // All fractal and SDF functions are adapted from https://jbaker.graphics/writings/DEC.html 
-
 // By gaziya5 aka gaz
 float fractal1(vec3 p0) 
 {   
@@ -131,8 +129,8 @@ float fractal3(vec3 p)
 }
 
 // By gaziya5 aka gaz
- float fractal4( vec3 p)
- {
+float fractal4( vec3 p)
+{
     float s = 3.0;
     for(int i = 0; i < 4; i++) 
     {
@@ -146,18 +144,18 @@ float fractal3(vec3 p)
     if (p.y < p.z) p.yz = p.zy;
     if (p.x < p.y) p.xy = p.yx;
     return length(cross(p, normalize(vec3(0, 1, 1)))) / s - 0.001;
-  }
+}
 
 // By gaziya5 aka gaz
- float fractal5( vec3 p)
- {
+float fractal5( vec3 p)
+{
     float itr=10.0;
     float r=0.1;
     p = mod(p-1.5, 3.0) - 1.5;
     p = abs(p) - 1.3;
-    if(p.x < p.z) p.xz = p.zx;
-    if(p.y < p.z) p.yz = p.zy;
-    if(p.x < p.y) p.xy = p.yx;
+    if (p.x < p.z) p.xz = p.zx;
+    if (p.y < p.z) p.yz = p.zy;
+    if (p.x < p.y) p.xy = p.yx;
 
     float s = 1.0;
 
@@ -169,8 +167,8 @@ float fractal3(vec3 p)
   		p -= vec3(0.7, 0.3, 5.5);
   		s *= r2;
   	}
-    return length(p.xy)/(s-r);
-  }
+    return length(p.xy) / (s-r);
+}
 
 // By gaziya5 aka gaz
 float fractal6(vec3 p)
@@ -224,7 +222,8 @@ float fractal8(vec3 p)
 #define PI 3.14159
 
 // By yonatan
-float fractal9(vec3 p){
+float fractal9(vec3 p)
+{
     float y;
     float s;
     float e;
@@ -238,7 +237,7 @@ float fractal9(vec3 p){
         e = dot(p, p) * (0.6 + y);
         s /= max(e, 0.0001);
     }
-    return e=sqrt(e)/s;
+    return e=sqrt(e) / s;
 }
 
 // by alia, adapted on https://jbaker.graphics/writings/DEC.html 
@@ -380,7 +379,10 @@ float map_fracatals(in vec3 p)
         p = circle_vec3(p, 16);
         p.zx *= rotate_2d((time) / 32);
         p.y -= 0.5;
+
         return mix(fractal1(p), fractal2(p), (sin(time / 8) + 1) / 2);
+
+        // return mix(mix(fractal4(p), fractal1(p), (cos(time / 8) + 1) / 2), fractal2(p), (sin(time / 8) + 1) / 2);
     }
     else if (kind == KIND_FRACTAL_MIX_1_AND_4) 
     {
@@ -417,12 +419,12 @@ float map_primatives(in vec3 p)
 
 void main() 
 {
-	// Set up initial data
-	ivec2 pixel_coords = ivec2(gl_GlobalInvocationID.xy);
-	vec2 image_size = imageSize(out_image);
+    // Set up initial data
+    ivec2 pixel_coords = ivec2(gl_GlobalInvocationID.xy);
+    vec2 image_size = imageSize(out_image);
 
-	// Start in ndc sapce
-	vec2 uv = (pixel_coords * 2.0 - image_size.xy) / image_size.y;
+    // Start in ndc sapce
+    vec2 uv = (pixel_coords * 2.0 - image_size.xy) / image_size.y;
      
     // Ray origin point 
     vec3 ro = vec3(0, 1, -3);
@@ -439,7 +441,8 @@ void main()
         vec3 ray_position = ro + rd * t;
 
         // Spiral the ray as it gets further from the camera
-        ray_position.xy *= rotate_2d(t * distortion);
+        //ray_position.xy *= rotate_2d(t * distortion);
+        ray_position.zy *= rotate_2d(t * distortion);
 
         // Continuously move the camera forwards
         ray_position.z += time * movement_speed;

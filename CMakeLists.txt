@@ -9,10 +9,13 @@ include("$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
 
 add_executable(${PROJECT_NAME}
     src/main.cpp
-    src/Application.cpp
-    src/ApplicationMinimal.cpp
     src/CameraController.cpp
     src/GUI.cpp
+
+    src/Applications/Application.cpp
+    src/Applications/CubeCompute.cpp
+    src/Applications/GameOfLife.cpp
+    src/Applications/SignedDistanceFields.cpp
 
     src/Util/Keyboard.cpp
     src/Util/Maths.cpp

@@ -1,15 +1,15 @@
 #version 460 core
 
-#define MAX_RAY_LENGTH 100.0
-#define MARCH 0.08
-#define MAX_STEPS 80
-
 layout(local_size_x = 8, local_size_y = 4, local_size_z = 1) in;
 layout(rgba32f, binding = 0) uniform writeonly image2D out_image;
 
 uniform mat4 inv_projection;
 uniform mat4 inv_view;
 uniform vec3 position;
+
+#define MAX_RAY_LENGTH 100.0
+#define MARCH_SIZE 0.08
+#define MAX_STEPS 80
 
 struct Ray 
 {
@@ -60,6 +60,46 @@ float map(in vec3 p)
 }
 
 
+vec4 march(vec3 ray_direction)
+{
+	Ray ray = Ray(position, ray_direction);
+
+    // Output colour
+    vec4 final_colour = vec4(0.0);
+    
+    // As an optimisation, only do the raymarch if the ray intersects the volume
+    vec2 cube = interesect_cube(ray, vec3(4.0, 1.0, 4.0), vec3(2.0));
+    if (cube.x < cube.y)
+    {
+        // Begin marching the volume where the intersection takes place
+        float t = cube.x;
+        for (int i = 0; i < MAX_STEPS; i++) 
+        {
+            vec3 p = ray.origin + ray.direction * t;
+            
+            // Get the density from the sdf functions
+            float density = map(p);
+            
+            // Step the ray a small amount each time rather than the SDF distance
+            t += MARCH_SIZE;
+            
+            // Density is only greater than 0 INSIDE the volume
+            if (density > 0.0)
+            {
+                vec4 colour = vec4(mix(vec3(1.0,1.0,1.0), vec3(0.0, 0.0, 0.0), density), density );
+                colour.rgb *= colour.a;
+                final_colour += colour * (1.0 - final_colour.a);
+            }
+            else if (t > MAX_RAY_LENGTH + cube.x || t > cube.y) 
+            {
+                break;
+            }
+        }
+    }
+    return final_colour;
+}
+
+
 void main() 
 {
 	// Set up initial data
@@ -70,39 +110,8 @@ void main()
 	vec4 world = inv_view * eye;
 	vec3 ray_direction = normalize(world).xyz;
 
-	Ray ray = Ray(position, ray_direction);
 
-    vec4 final_colour = vec4(0.0);
-    
-    // As an optimization, only do the raymarch if the 
-    vec2 cube = interesect_cube(ray, vec3(4.0, 1.0, 4.0), vec3(2.0));
-    if (cube.x < cube.y)
-    {
-        float t = cube.x;
-        for (int i = 0; i < MAX_STEPS; i++) 
-        {
-            vec3 p = ray.origin + ray.direction * t;
-        
-            float density = map(p);
-        
-            t += MARCH;
-        
-            if (density > 0.0)
-            {
-                vec4 colour = vec4(mix(vec3(1.0,1.0,1.0), vec3(0.0, 0.0, 0.0), density), density );
-                colour.rgb *= colour.a;
-                final_colour += colour * (1.0 - final_colour.a);
-            }
-            else if (t > MAX_RAY_LENGTH) 
-            {
-                break;
-            }
-        }
-    }
-    else 
-    {
-      //  final_colour = vec4(0.5, 0.6, 0.8, 1);
-    }
+    vec4 final_colour = march(ray_direction);
 
     imageStore(out_image, pixel_coords, vec4(final_colour.rgb, 1.0));
 

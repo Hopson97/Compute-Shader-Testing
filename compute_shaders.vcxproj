@@ -158,7 +158,7 @@
     <ClCompile Include="src\Applications\Application.cpp" />
     <ClCompile Include="src\Applications\CubeCompute.cpp" />
     <ClCompile Include="src\Applications\GameOfLife.cpp" />
-    <ClCompile Include="src\Applications\SignedDistanceFields.cpp" />
+    <ClCompile Include="src\Applications\SignedDistanceFractals.cpp" />
     <ClCompile Include="src\CameraController.cpp" />
     <ClCompile Include="src\Graphics\Camera.cpp" />
     <ClCompile Include="src\Graphics\OpenGL\Framebuffer.cpp" />
@@ -194,7 +194,7 @@
     <ClInclude Include="src\Applications\Application.h" />
     <ClInclude Include="src\Applications\CubeCompute.h" />
     <ClInclude Include="src\Applications\GameOfLife.h" />
-    <ClInclude Include="src\Applications\SignedDistanceFields.h" />
+    <ClInclude Include="src\Applications\SignedDistanceFractals.h" />
     <ClInclude Include="src\CameraController.h" />
     <ClInclude Include="src\Graphics\Camera.h" />
     <ClInclude Include="src\Graphics\OpenGL\Framebuffer.h" />

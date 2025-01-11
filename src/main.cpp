@@ -6,7 +6,7 @@
 
 #include "Applications/CubeCompute.h"
 #include "Applications/GameOfLife.h"
-#include "Applications/SignedDistanceFields.h"
+#include "Applications/SignedDistanceFractals.h"
 #include "GUI.h"
 #include "Graphics/OpenGL/GLDebugEnable.h"
 #include "Util/Keyboard.h"
@@ -56,8 +56,8 @@ int main()
     bool show_debug_info = false;
 
     // std::unique_ptr<Application> app = std::make_unique<GameOfLife>();
-    // std::unique_ptr<Application> app = std::make_unique<CubeCompute>();
-    std::unique_ptr<Application> app = std::make_unique<SignedDistanceFields>();
+    std::unique_ptr<Application> app = std::make_unique<CubeCompute>();
+    // std::unique_ptr<Application> app = std::make_unique<SignedDistanceFractals>();
     if (!app->init(window))
     {
         return -1;
@@ -128,7 +128,7 @@ int main()
             if (ImGui::Button("SignedDistanceFields"))
             {
                 update = true;
-                app = std::make_unique<SignedDistanceFields>();
+                app = std::make_unique<SignedDistanceFractals>();
             }
 
             if (update && !app->init(window))

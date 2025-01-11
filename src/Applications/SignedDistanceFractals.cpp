@@ -1,15 +1,15 @@
-#include "SignedDistanceFields.h"
+#include "SignedDistanceFractals.h"
 
 #include "../Util/Maths.h"
 
 #include <imgui.h>
 
-bool SignedDistanceFields::on_init(sf::Window& window)
+bool SignedDistanceFractals::on_init(sf::Window& window)
 {
 
     window_ = &window;
 
-    if (!cube_compute.load_stage("assets/shaders/SignedDistanceFields.glsl", ShaderType::Compute) ||
+    if (!cube_compute.load_stage("assets/shaders/SignedDistanceFractals.glsl", ShaderType::Compute) ||
         !cube_compute.link_shaders())
     {
         return false;
@@ -22,7 +22,7 @@ bool SignedDistanceFields::on_init(sf::Window& window)
     return true;
 }
 
-void SignedDistanceFields::on_render(sf::Window& window)
+void SignedDistanceFractals::on_render(sf::Window& window)
 {
     // Update the camera from keyboard/ mouse
     static sf::Clock clock;

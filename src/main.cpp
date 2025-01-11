@@ -4,6 +4,7 @@
 #include <glad/glad.h>
 #include <imgui.h>
 
+#include "Applications/CloudyCompute.h"
 #include "Applications/CubeCompute.h"
 #include "Applications/GameOfLife.h"
 #include "Applications/SignedDistanceFractals.h"
@@ -26,11 +27,10 @@ int main()
     context_settings.antialiasingLevel = 4;
     context_settings.majorVersion = 4;
     context_settings.minorVersion = 5;
-    context_settings.attributeFlags = sf::ContextSettings::Core;
+    context_settings.attributeFlags = sf::ContextSettings::Debug;
 
     const char* TITLE = "Compute Shaders - Press F1 For Debug";
     sf::Window window{{1600, 900}, TITLE, sf::Style::Close, context_settings};
-
 
     window.setVerticalSyncEnabled(true);
     window.setActive(true);
@@ -56,7 +56,8 @@ int main()
     bool show_debug_info = false;
 
     // std::unique_ptr<Application> app = std::make_unique<GameOfLife>();
-    std::unique_ptr<Application> app = std::make_unique<CubeCompute>();
+    std::unique_ptr<Application> app = std::make_unique<CloudyCompute>();
+    //std::unique_ptr<Application> app = std::make_unique<CubeCompute>();
     // std::unique_ptr<Application> app = std::make_unique<SignedDistanceFractals>();
     if (!app->init(window))
     {
@@ -81,7 +82,6 @@ int main()
         }
         auto dt = clock.restart();
 
-        
         // Update
         {
             auto& update_profiler = profiler.begin_section("Update");
@@ -129,6 +129,11 @@ int main()
             {
                 update = true;
                 app = std::make_unique<SignedDistanceFractals>();
+            }
+            if (ImGui::Button("ClodyCompute"))
+            {
+                update = true;
+                app = std::make_unique<CloudyCompute>();
             }
 
             if (update && !app->init(window))

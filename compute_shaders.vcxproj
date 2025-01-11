@@ -156,6 +156,7 @@
     <ClCompile Include="deps\imgui_sfml\imgui-SFML.cpp" />
     <ClCompile Include="deps\imgui_sfml\imgui_impl_opengl3.cpp" />
     <ClCompile Include="src\Applications\Application.cpp" />
+    <ClCompile Include="src\Applications\CloudyCompute.cpp" />
     <ClCompile Include="src\Applications\CubeCompute.cpp" />
     <ClCompile Include="src\Applications\GameOfLife.cpp" />
     <ClCompile Include="src\Applications\SignedDistanceFractals.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="deps\imgui_sfml\imgui_impl_opengl3.h" />
     <ClInclude Include="deps\imgui_sfml\imgui_inc.h" />
     <ClInclude Include="src\Applications\Application.h" />
+    <ClInclude Include="src\Applications\CloudyCompute.h" />
     <ClInclude Include="src\Applications\CubeCompute.h" />
     <ClInclude Include="src\Applications\GameOfLife.h" />
     <ClInclude Include="src\Applications\SignedDistanceFractals.h" />

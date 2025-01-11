@@ -162,7 +162,7 @@
     <ClCompile Include="src\CameraController.cpp" />
     <ClCompile Include="src\Graphics\Camera.cpp" />
     <ClCompile Include="src\Graphics\OpenGL\Framebuffer.cpp" />
-    <ClCompile Include="src\Graphics\OpenGL\GLDebugEnable.cpp" />
+    <ClCompile Include="src\Graphics\OpenGL\GLUtils.cpp" />
     <ClCompile Include="src\Util\Keyboard.cpp" />
     <ClCompile Include="src\Util\Maths.cpp" />
     <ClCompile Include="src\Graphics\OpenGL\Shader.cpp" />
@@ -197,9 +197,10 @@
     <ClInclude Include="src\Applications\SignedDistanceFractals.h" />
     <ClInclude Include="src\CameraController.h" />
     <ClInclude Include="src\Graphics\Camera.h" />
+    <ClInclude Include="src\Graphics\OpenGL\BufferObject.h" />
     <ClInclude Include="src\Graphics\OpenGL\Framebuffer.h" />
-    <ClInclude Include="src\Graphics\OpenGL\GLDebugEnable.h" />
     <ClInclude Include="src\Graphics\OpenGL\GLResource.h" />
+    <ClInclude Include="src\Graphics\OpenGL\GLUtils.h" />
     <ClInclude Include="src\Util\Keyboard.h" />
     <ClInclude Include="src\Util\Maths.h" />
     <ClInclude Include="src\Graphics\OpenGL\Shader.h" />

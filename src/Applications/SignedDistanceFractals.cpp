@@ -1,15 +1,17 @@
 #include "SignedDistanceFractals.h"
 
-#include "../Util/Maths.h"
-
 #include <imgui.h>
+
+#include "../Graphics/OpenGL/GLUtils.h"
+#include "../Util/Maths.h"
 
 bool SignedDistanceFractals::on_init(sf::Window& window)
 {
 
     window_ = &window;
 
-    if (!cube_compute.load_stage("assets/shaders/SignedDistanceFractals.glsl", ShaderType::Compute) ||
+    if (!cube_compute.load_stage("assets/shaders/SignedDistanceFractals.glsl",
+                                 ShaderType::Compute) ||
         !cube_compute.link_shaders())
     {
         return false;
@@ -36,7 +38,7 @@ void SignedDistanceFractals::on_render(sf::Window& window)
     cube_compute.set_uniform("movement_speed", sdf_camera_speed_);
     cube_compute.set_uniform("palette_config", sdf_colours_);
     glBindImageTexture(0, screen_texture_.id, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA32F);
-    glDispatchCompute(ceil(window.getSize().x / 8), ceil(window.getSize().y / 4), 1);
+    GL::dispatch_compute(ceil(window.getSize().x / 8), ceil(window.getSize().y / 4), 1);
     glMemoryBarrier(GL_ALL_BARRIER_BITS);
 
     // Render the computed output to a screen-wide quad
@@ -77,7 +79,6 @@ void SignedDistanceFractals::on_render(sf::Window& window)
         ImGui::RadioButton("4", &sdf_colours_, 3);
 
         ImGui::Separator();
-
 
         ImGui::Text("Parameters");
         ImGui::SliderFloat("Distortion", &sdf_distortion_, 0.1f, 1.0f);

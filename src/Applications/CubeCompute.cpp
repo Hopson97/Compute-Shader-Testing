@@ -1,8 +1,11 @@
 #include "CubeCompute.h"
 
-#include "../Util/Maths.h"
+#include <SFML/Window/Keyboard.hpp>
+#include <SFML/Window/Mouse.hpp>
 
 #include "../GUI.h"
+#include "../Graphics/OpenGL/GLUtils.h"
+#include "../Util/Maths.h"
 
 bool CubeCompute::on_init(sf::Window& window)
 {
@@ -33,8 +36,7 @@ bool CubeCompute::on_init(sf::Window& window)
     cube_texture_.set_mag_filter(TextureMagFilter::Nearest);
 
     // Set up the compute shader output texture
-    screen_texture_.create(window.getSize().x, window.getSize().y, 1,
-                           TEXTURE_PARAMS_NEAREST,
+    screen_texture_.create(window.getSize().x, window.getSize().y, 1, TEXTURE_PARAMS_NEAREST,
                            TextureFormat::RGBA32F);
 
     return true;
@@ -102,8 +104,9 @@ void CubeCompute::on_render(sf::Window& window)
     cube_compute.set_uniform("inv_projection", glm::inverse(camera_.get_projection_matrix()));
     cube_compute.set_uniform("inv_view", glm::inverse(camera_.get_view_matrix()));
     cube_compute.set_uniform("position", camera_.transform.position);
+
     glBindImageTexture(0, screen_texture_.id, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA32F);
-    glDispatchCompute(ceil(window.getSize().x / 8), ceil(window.getSize().y / 4), 1);
+    GL::dispatch_compute(std::ceil(window.getSize().x / 8), std::ceil(window.getSize().y / 4), 1);
     glMemoryBarrier(GL_ALL_BARRIER_BITS);
 
     // Render the computed output to a screen-wide quad

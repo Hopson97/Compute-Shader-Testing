@@ -1,5 +1,7 @@
 #pragma once
 
+#include <SFML/Window/Event.hpp>
+#include <SFML/Window/Window.hpp>
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -8,12 +10,11 @@
 #include "../Graphics/OpenGL/Texture.h"
 #include "../Graphics/OpenGL/VertexArray.h"
 
-constexpr int WIDTH = 1600;
-constexpr int HEIGHT = 900;
-
 class Application
 {
   public:
+    virtual ~Application() = default;
+
     [[nodiscard]] bool init(sf::Window& window);
 
     virtual void on_event([[maybe_unused]] sf::Event event)

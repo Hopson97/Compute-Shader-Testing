@@ -12,8 +12,8 @@ namespace
     const std::array<std::string, 6> CUBE_TEXTURE_NAMES = {"right.png",  "left.png", "top.png",
                                                            "bottom.png", "back.png", "front.png"};
 
-    bool load_image_from_file(const std::filesystem::path& path, bool flip_vertically,
-                              bool flip_horizontally, sf::Image& out_image)
+    [[nodiscard]] bool load_image_from_file(const std::filesystem::path& path, bool flip_vertically,
+                                            bool flip_horizontally, sf::Image& out_image)
     {
         if (!out_image.loadFromFile(path.string()))
         {
@@ -123,20 +123,25 @@ bool Texture2D::load_from_image(const sf::Image& image, GLsizei levels, TextureP
     // Allocate the storage
     glTextureStorage2D(id, levels, static_cast<GLenum>(format), w, h);
 
-    // Upload the pixels
+    // Upload the data
     glTextureSubImage2D(id, 0, 0, 0, w, h, static_cast<GLenum>(internal_format), GL_UNSIGNED_BYTE,
                         data);
-    glGenerateTextureMipmap(id);
 
-    // Set some default wrapping
+    if (filters.min_filter == TextureMinFilter::LinearMipmapLinear ||
+        filters.min_filter == TextureMinFilter::LinearMipmapNearest)
+    {
+        glGenerateTextureMipmap(id);
+    }
+
     set_filters(filters);
     is_loaded_ = true;
     return true;
 }
 
 bool Texture2D::load_from_file(const std::filesystem::path& path, GLsizei levels,
-                               bool flip_vertically, bool flip_horizontally, TextureParameters filters,
-                               TextureInternalFormat internal_format, TextureFormat format)
+                               bool flip_vertically, bool flip_horizontally,
+                               TextureParameters filters, TextureInternalFormat internal_format,
+                               TextureFormat format)
 {
     sf::Image image;
     if (!load_image_from_file(path, flip_vertically, flip_horizontally, image))

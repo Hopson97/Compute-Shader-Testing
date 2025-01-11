@@ -1,12 +1,13 @@
 #pragma once
 
+#include <unordered_map>
+
 #include "GLResource.h"
 #include "Texture.h"
 
-#include <unordered_map>
-
-struct Framebuffer : public GLResource<glCreateFramebuffers, glDeleteFramebuffers>
+class Framebuffer : public GLResource<glCreateFramebuffers, glDeleteFramebuffers>
 {
+  public:
     Framebuffer(GLuint width, GLuint height);
     ~Framebuffer();
 
@@ -19,11 +20,12 @@ struct Framebuffer : public GLResource<glCreateFramebuffers, glDeleteFramebuffer
     Framebuffer& attach_renderbuffer();
     Framebuffer& attach_depth_buffer();
 
-    bool is_complete() const;
+    [[nodiscard]] bool is_complete() const;
+
+    const GLuint width = 0;
+    const GLuint height = 0;
 
   private:
     std::vector<Texture2D> textures_;
     std::vector<GLuint> renderbuffers_;
-    GLuint width = 0;
-    GLuint height = 0;
 };

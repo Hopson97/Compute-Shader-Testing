@@ -3,7 +3,7 @@
 
 #include "Application.h"
 
-class SignedDistanceFractals : public Application
+class SignedDistanceFractals final : public Application
 {
   public:
     bool on_init(sf::Window& window) override;

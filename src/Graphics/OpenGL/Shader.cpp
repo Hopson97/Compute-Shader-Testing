@@ -6,6 +6,7 @@
 
 #include "../../Util/Util.h"
 
+
 namespace
 {
     enum class IVParameter
@@ -14,7 +15,7 @@ namespace
         LinkStatus = GL_LINK_STATUS
     };
 
-    constexpr auto to_string(IVParameter param)
+    [[nodiscard]] constexpr auto to_string(IVParameter param)
     {
         switch (param)
         {
@@ -28,7 +29,7 @@ namespace
     }
 
     template <IVParameter parameter>
-    auto verify_shader(GLuint shader)
+    [[nodiscard]] auto verify_shader(GLuint shader)
     {
         // Verify
         GLint status = 0;
@@ -58,16 +59,15 @@ namespace
             {
                 glGetProgramiv(shader, GL_INFO_LOG_LENGTH, &length);
             }
-            std::string buffer(2500, ' ');
+            std::string buffer(1024, ' ');
             glGetShaderInfoLog(shader, 1024, NULL, buffer.data());
-            std::println(std::cerr, "Failed to '{}' shader. Error: {}", to_string(parameter),
-                         buffer);
+            std::println(std::cerr, "Failed to {} shader. Error: {}", to_string(parameter), buffer);
             return false;
         }
         return true;
     }
 
-    GLuint compile_shader(const char* source, GLuint shader_type)
+    [[nodiscard]] GLuint compile_shader(const char* source, GLuint shader_type)
     {
         GLuint shader = glCreateShader(shader_type);
         glShaderSource(shader, 1, (const GLchar* const*)&source, nullptr);
@@ -80,7 +80,6 @@ namespace
         return shader;
     }
 } // namespace
-
 
 Shader::~Shader()
 {
@@ -99,7 +98,6 @@ bool Shader::load_stage(const std::filesystem::path& file_path, ShaderType shade
     GLuint shader = compile_shader(source.c_str(), static_cast<GLenum>(shader_type));
     if (!shader)
     {
-        std::println(std::cerr, "Failed to compile shader '{}'.", file_path.string());
         return false;
     }
     stages_.push_back(shader);

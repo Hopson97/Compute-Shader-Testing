@@ -78,7 +78,6 @@ constexpr TextureParameters TEXTURE_PARAMS_MIPMAP = {.min_filter = TextureMinFil
                                                      .mag_filter = TextureMagFilter::Linear,
                                                      .wrap_s = TextureWrap::Repeat,
                                                      .wrap_t = TextureWrap::Repeat};
-
 constexpr TextureParameters TEXTURE_PARAMS_NEAREST = {.min_filter = TextureMinFilter::Nearest,
                                                      .mag_filter = TextureMagFilter::Nearest,
                                                      .wrap_s = TextureWrap::Repeat,
@@ -118,17 +117,19 @@ struct Texture2D : public GLTextureResource
 
     GLuint create_depth_texture(GLsizei width, GLsizei height);
 
-    bool load_from_image(const sf::Image& image, GLsizei levels,
-                         TextureParameters filters = TEXTURE_PARAMS_MIPMAP,
-                         TextureInternalFormat internal_format = TextureInternalFormat::RGBA,
-                         TextureFormat format = TextureFormat::RGBA8);
+    [[nodiscard]] bool
+    load_from_image(const sf::Image& image, GLsizei levels,
+                    TextureParameters filters = TEXTURE_PARAMS_MIPMAP,
+                    TextureInternalFormat internal_format = TextureInternalFormat::RGBA,
+                    TextureFormat format = TextureFormat::RGBA8);
 
-    bool load_from_file(const std::filesystem::path& path, GLsizei levels, bool flip_vertically,
-                        bool flip_horizontally, TextureParameters filters = TEXTURE_PARAMS_MIPMAP,
-                        TextureInternalFormat internal_format = TextureInternalFormat::RGBA,
-                        TextureFormat format = TextureFormat::RGBA8);
+    [[nodiscard]] bool
+    load_from_file(const std::filesystem::path& path, GLsizei levels, bool flip_vertically,
+                   bool flip_horizontally, TextureParameters filters = TEXTURE_PARAMS_MIPMAP,
+                   TextureInternalFormat internal_format = TextureInternalFormat::RGBA,
+                   TextureFormat format = TextureFormat::RGBA8);
 
-    bool is_loaded() const;
+    [[nodiscard]] bool is_loaded() const;
 
   private:
     bool is_loaded_ = false;

@@ -1,13 +1,10 @@
 #pragma once
 
 #include <filesystem>
-#include <iostream>
 #include <string_view>
 #include <unordered_map>
 #include <vector>
 
-#include <SFML/Window/Event.hpp>
-#include <SFML/Window/Window.hpp>
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 
@@ -31,8 +28,8 @@ class Shader
     Shader& operator=(const Shader& other) = delete;
     ~Shader();
 
-    bool load_stage(const std::filesystem::path& file_path, ShaderType shader_type);
-    bool link_shaders();
+    [[nodiscard]] bool load_stage(const std::filesystem::path& file_path, ShaderType shader_type);
+    [[nodiscard]] bool link_shaders();
 
     void bind() const;
 

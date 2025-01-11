@@ -45,7 +45,7 @@ Texture2D& Framebuffer::get_texture(GLuint index)
 
 Framebuffer& Framebuffer::attach_colour(TextureFormat format, const TextureParameters& filters)
 {
-    // assert(textures_.size() < GL_MAX_COLOR_ATTACHMENTS - 1);
+    assert(textures_.size() < GL_MAX_COLOR_ATTACHMENTS - 1);
     GLenum attachment = GL_COLOR_ATTACHMENT0 + static_cast<int>(textures_.size());
 
     Texture2D& texture = textures_.emplace_back();

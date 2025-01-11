@@ -1,5 +1,6 @@
 #include "GameOfLife.h"
 
+#include "../Graphics/OpenGL/GLUtils.h"
 #include <SFML/Graphics/Image.hpp>
 
 bool GameOfLife::on_init(sf::Window& window)
@@ -13,9 +14,9 @@ bool GameOfLife::on_init(sf::Window& window)
 
     sf::Image image;
     image.create(window.getSize().x, window.getSize().y);
-    for (int y = 0; y < image.getSize().y; y++)
+    for (int y = 0; y < static_cast<int>(image.getSize().y); y++)
     {
-        for (int x = 0; x < image.getSize().x; x++)
+        for (int x = 0; x < static_cast<int>(image.getSize().x); x++)
         {
             image.setPixel(x, y, rand() % 50 > 20 ? sf::Color::Black : sf::Color::White);
         }
@@ -53,7 +54,7 @@ void GameOfLife::on_render(sf::Window& window)
     }
     generation_++;
 
-    glDispatchCompute(ceil(window.getSize().x / 8), ceil(window.getSize().y / 4), 1);
+    GL::dispatch_compute(ceil(window.getSize().x / 8), ceil(window.getSize().y / 4), 1u);
     glMemoryBarrier(GL_ALL_BARRIER_BITS);
 
     screen_shader_.bind();

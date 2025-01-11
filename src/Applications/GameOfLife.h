@@ -2,7 +2,7 @@
 
 #include "Application.h"
 
-class GameOfLife : public Application
+class GameOfLife final : public Application
 {
   public:
     bool on_init(sf::Window& window) override;

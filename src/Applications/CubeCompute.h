@@ -2,10 +2,9 @@
 
 #include "../Graphics/Camera.h"
 #include "../Graphics/Mesh.h"
-
 #include "Application.h"
 
-class CubeCompute : public Application
+class CubeCompute final : public Application
 {
   public:
     bool on_init(sf::Window& window) override;
@@ -27,5 +26,5 @@ class CubeCompute : public Application
 
     sf::Window* window_ = nullptr;
 
-    bool mouse_locked_;
+    bool mouse_locked_ = false;
 };

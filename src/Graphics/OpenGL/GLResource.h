@@ -32,18 +32,4 @@ struct GLResource
     void create()   { if(id == 0) {(*CreateFunction)(1, &id);           } }
     void destroy()  { if(id != 0) {(*DeleteFunction)(1, &id); id = 0;   } }
 };
-
 // clang-format on
-struct GLBuffer : public GLResource<glCreateBuffers, glDeleteBuffers>
-{
-    enum class Target
-    {
-        ArrayBuffer = GL_ARRAY_BUFFER
-    };
-
-    void bind(Target target)
-    {
-        assert(id);
-        glBindBuffer(static_cast<GLenum>(target), id);
-    }
-};

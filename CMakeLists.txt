@@ -23,7 +23,7 @@ add_executable(${PROJECT_NAME}
     src/Graphics/Mesh.cpp
 
     src/Graphics/OpenGL/Framebuffer.cpp
-    src/Graphics/OpenGL/GLDebugEnable.cpp
+    src/Graphics/OpenGL/GLUtils.cpp
     src/Graphics/OpenGL/Shader.cpp
     src/Graphics/OpenGL/Texture.cpp
     src/Graphics/OpenGL/VertexArray.cpp

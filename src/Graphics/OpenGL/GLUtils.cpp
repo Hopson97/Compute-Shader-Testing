@@ -1,13 +1,13 @@
-#include "GLDebugEnable.h"
+#include "GLUtils.h"
 
-#include <exception>
-#include <glad/glad.h>
 #include <iostream>
 
-void GLAPIENTRY glDebugCallback(GLenum source, GLenum type, GLuint, GLenum severity, GLsizei,
-                                const GLchar* message, const void*)
+namespace
 {
-    // clang-format off
+    void GLAPIENTRY glDebugCallback(GLenum source, GLenum type, GLuint, GLenum severity, GLsizei,
+                                    const GLchar* message, const void*)
+    {
+        // clang-format off
     const char* type_string = "?";
     switch (type) {
         case GL_DEBUG_TYPE_ERROR:                   type_string = "error";               break;
@@ -37,20 +37,46 @@ void GLAPIENTRY glDebugCallback(GLenum source, GLenum type, GLuint, GLenum sever
         case GL_DEBUG_SOURCE_APPLICATION:       source_string = "app";               break;
         case GL_DEBUG_SOURCE_OTHER:             source_string = "other";             break;
     }
-    // clang-format on
-    std::println(std::cerr, "OpenGL message.\n Type: {}\nnSeverity: {}\nnSource: {}\nnMessage: {}",
-               type_string, severity_string, source_string, message);
-}
+        // clang-format on
+        std::println(std::cerr,
+                     "OpenGL message.\n  Type: {}\n  Severity: {}\n  Source: {}\n  Message: {}",
+                     type_string, severity_string, source_string, message);
+    }
+} // namespace
 
-void init_opengl_debugging()
+namespace GL
 {
+    void enable_debugging()
+    {
 #ifndef __APPLE__
 #ifndef NDEBUG
-    glEnable(GL_DEBUG_OUTPUT);
-    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+        glEnable(GL_DEBUG_OUTPUT);
+        glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 #endif
-    glDebugMessageCallback(glDebugCallback, NULL);
+        glDebugMessageCallback(glDebugCallback, NULL);
 
-    glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, GL_TRUE);
+        glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, GL_TRUE);
 #endif
-}
+    }
+
+    void cull_face(Face face)
+    {
+        glCullFace(static_cast<GLenum>(face));
+    }
+
+    void enable(Capability capability)
+    {
+        glEnable(static_cast<GLenum>(capability));
+    }
+
+    void disable(Capability capability)
+    {
+        glDisable(static_cast<GLenum>(capability));
+    }
+
+    void polygon_mode(Face face, PolygonMode mode)
+    {
+        glPolygonMode(static_cast<GLenum>(face), static_cast<GLenum>(mode));
+    }
+
+} // namespace GL

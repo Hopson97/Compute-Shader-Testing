@@ -8,7 +8,7 @@
 #include "Applications/GameOfLife.h"
 #include "Applications/SignedDistanceFractals.h"
 #include "GUI.h"
-#include "Graphics/OpenGL/GLDebugEnable.h"
+#include "Graphics/OpenGL/GLUtils.h"
 #include "Util/Keyboard.h"
 #include "Util/Profiler.h"
 #include "Util/TimeStep.h"
@@ -28,10 +28,10 @@ int main()
     context_settings.minorVersion = 5;
     context_settings.attributeFlags = sf::ContextSettings::Core;
 
-    sf::Window window{{WIDTH, HEIGHT},
-                      "Compute Shaders - Press F1 For Debug",
-                      sf::Style::Close,
-                      context_settings};
+    const char* TITLE = "Compute Shaders - Press F1 For Debug";
+    sf::Window window{{1600, 900}, TITLE, sf::Style::Close, context_settings};
+
+
     window.setVerticalSyncEnabled(true);
     window.setActive(true);
     window.setPosition({window.getPosition().x, 10});
@@ -43,7 +43,7 @@ int main()
     }
     glClearColor(50.0f / 255.0f, 205.0f / 255.0f, 250.0f / 255.0f, 0);
     glViewport(0, 0, window.getSize().x, window.getSize().y);
-    init_opengl_debugging();
+    GL::enable_debugging();
 
     if (!GUI::init(&window))
     {
@@ -79,7 +79,7 @@ int main()
             app->on_event(e);
             handle_event(e, window, show_debug_info);
         }
-        auto dt = clock.restart();
+        // auto dt = clock.restart();
 
         /*
         // Update

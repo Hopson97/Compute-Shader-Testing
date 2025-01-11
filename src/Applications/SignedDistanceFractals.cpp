@@ -38,7 +38,7 @@ void SignedDistanceFractals::on_render(sf::Window& window)
     cube_compute.set_uniform("movement_speed", sdf_camera_speed_);
     cube_compute.set_uniform("palette_config", sdf_colours_);
     glBindImageTexture(0, screen_texture_.id, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA32F);
-    GL::dispatch_compute(ceil(window.getSize().x / 8), ceil(window.getSize().y / 4), 1);
+    gl::dispatch_compute(ceil(window.getSize().x / 8), ceil(window.getSize().y / 4), 1);
     glMemoryBarrier(GL_ALL_BARRIER_BITS);
 
     // Render the computed output to a screen-wide quad

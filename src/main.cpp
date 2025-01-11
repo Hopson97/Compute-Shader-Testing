@@ -43,7 +43,7 @@ int main()
     }
     glClearColor(50.0f / 255.0f, 205.0f / 255.0f, 250.0f / 255.0f, 0);
     glViewport(0, 0, window.getSize().x, window.getSize().y);
-    GL::enable_debugging();
+    gl::enable_debugging();
 
     if (!GUI::init(&window))
     {
@@ -79,16 +79,16 @@ int main()
             app->on_event(e);
             handle_event(e, window, show_debug_info);
         }
-        // auto dt = clock.restart();
+        auto dt = clock.restart();
 
-        /*
+        
         // Update
         {
             auto& update_profiler = profiler.begin_section("Update");
-            app.on_update(keyboard, dt);
+            app->on_update(window, keyboard, dt);
             update_profiler.end_section();
         }
-
+        /*
         // Fixed-rate update
         {
             auto& fixed_update_profiler = profiler.begin_section("Fixed Update");

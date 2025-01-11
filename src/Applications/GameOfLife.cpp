@@ -54,7 +54,7 @@ void GameOfLife::on_render(sf::Window& window)
     }
     generation_++;
 
-    GL::dispatch_compute(ceil(window.getSize().x / 8), ceil(window.getSize().y / 4), 1u);
+    gl::dispatch_compute(ceil(window.getSize().x / 8), ceil(window.getSize().y / 4), 1u);
     glMemoryBarrier(GL_ALL_BARRIER_BITS);
 
     screen_shader_.bind();

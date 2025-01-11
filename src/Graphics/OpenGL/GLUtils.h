@@ -2,7 +2,7 @@
 
 #include <glad/glad.h>
 
-namespace GL
+namespace gl
 {
     enum class Face
     {

@@ -9,11 +9,10 @@ class CubeCompute final : public Application
   public:
     bool on_init(sf::Window& window) override;
     void on_event(sf::Event event) override;
+    void on_update(const sf::Window& window, const Keyboard& keyboard, sf::Time dt) override;
     void on_render(sf::Window& window) override;
 
   private:
-    void update_camera(sf::Time dt);
-
     Shader cube_compute;
     Shader scene_shader_;
     Texture2D screen_texture_;

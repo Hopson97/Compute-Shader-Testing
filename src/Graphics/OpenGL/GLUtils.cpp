@@ -44,7 +44,7 @@ namespace
     }
 } // namespace
 
-namespace GL
+namespace gl
 {
     void enable_debugging()
     {

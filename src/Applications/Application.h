@@ -10,6 +10,8 @@
 #include "../Graphics/OpenGL/Texture.h"
 #include "../Graphics/OpenGL/VertexArray.h"
 
+class Keyboard;
+
 class Application
 {
   public:
@@ -18,6 +20,10 @@ class Application
     [[nodiscard]] bool init(sf::Window& window);
 
     virtual void on_event([[maybe_unused]] sf::Event event)
+    {
+    }
+
+    virtual void on_update(const sf::Window& window, const Keyboard& keyboard, sf::Time dt)
     {
     }
 

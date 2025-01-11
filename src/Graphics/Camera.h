@@ -1,6 +1,9 @@
 #pragma once
 
 #include "../Util/Maths.h"
+#include <SFML/Window/Window.hpp>
+
+class Keyboard;
 
 struct PerspectiveCamera
 {
@@ -17,6 +20,9 @@ struct PerspectiveCamera
     const glm::mat4& get_view_matrix() const;
     const glm::mat4& get_projection_matrix() const;
     const glm::vec3& get_forwards() const;
+
+    void free_controller_input(const Keyboard& keyboard, sf::Time dt, const sf::Window& window,
+                               bool is_rotation_locked);
 
   private:
     glm::mat4 projection_matrix_{1.0f};

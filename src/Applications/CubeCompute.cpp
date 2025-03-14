@@ -88,9 +88,11 @@ void CubeCompute::on_render(sf::Window& window)
 
 void CubeCompute::on_event(sf::Event event)
 {
-    if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::L)
+    if (auto key = event.getIf<sf::Event::KeyReleased>())
     {
-        mouse_locked_ = !mouse_locked_;
-        std::cout << "Mouse state: " << (mouse_locked_ ? "Locked" : "Unlocked") << '\n';
+        if (key->code == sf::Keyboard::Key::L)
+        {
+            mouse_locked_ = !mouse_locked_;
+        }
     }
 }

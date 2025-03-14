@@ -1,5 +1,7 @@
 #pragma once
 
+#include <SFML/System/Clock.hpp>
+
 #include "../Graphics/Camera.h"
 #include "../Graphics/Mesh.h"
 #include "../Graphics/OpenGL/BufferObject.h"
@@ -18,6 +20,7 @@ class CloudyCompute final : public Application
 
     Shader scene_shader_;
     Texture2D screen_texture_;
+    Texture2D noise_texture_;
 
     PerspectiveCamera camera_;
 
@@ -26,5 +29,7 @@ class CloudyCompute final : public Application
     sf::Window* window_ = nullptr;
 
     bool mouse_locked_ = false;
+
+    sf::Clock clock_;
 };
-#pragma once
+

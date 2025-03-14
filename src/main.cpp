@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include <SFML/Window/VideoMode.hpp>
 #include <SFML/Window/Window.hpp>
 #include <glad/glad.h>
 #include <imgui.h>
@@ -16,7 +17,8 @@
 
 namespace
 {
-    void handle_event(const sf::Event& e, sf::Window& window, bool& show_debug_info);
+    void handle_event(const sf::Event& event, sf::Window& window, bool& show_debug_info,
+                      bool& close_requested);
 } // namespace
 
 int main()
@@ -24,13 +26,13 @@ int main()
     sf::ContextSettings context_settings;
     context_settings.depthBits = 24;
     context_settings.stencilBits = 8;
-    context_settings.antialiasingLevel = 4;
+    context_settings.antiAliasingLevel = 4;
     context_settings.majorVersion = 4;
     context_settings.minorVersion = 5;
     context_settings.attributeFlags = sf::ContextSettings::Debug;
 
-    const char* TITLE = "Compute Shaders - Press F1 For Debug";
-    sf::Window window{{1600, 900}, TITLE, sf::Style::Close, context_settings};
+    sf::Window window(sf::VideoMode({1600, 900}), "Yahvg - Press F1 For Debug", sf::Style::Close,
+                      sf::State::Windowed, context_settings);
 
     window.setVerticalSyncEnabled(true);
     window.setActive(true);
@@ -57,8 +59,8 @@ int main()
 
     // std::unique_ptr<Application> app = std::make_unique<GameOfLife>();
     std::unique_ptr<Application> app = std::make_unique<CloudyCompute>();
-    //std::unique_ptr<Application> app = std::make_unique<CubeCompute>();
-    // std::unique_ptr<Application> app = std::make_unique<SignedDistanceFractals>();
+    // std::unique_ptr<Application> app = std::make_unique<CubeCompute>();
+    //  std::unique_ptr<Application> app = std::make_unique<SignedDistanceFractals>();
     if (!app->init(window))
     {
         return -1;
@@ -73,12 +75,13 @@ int main()
     while (window.isOpen())
     {
         GUI::begin_frame();
-        for (sf::Event e{}; window.pollEvent(e);)
+        bool close_requested = false;
+        while (auto event = window.pollEvent())
         {
-            GUI::event(window, e);
-            keyboard.update(e);
-            app->on_event(e);
-            handle_event(e, window, show_debug_info);
+            GUI::event(window, *event);
+            keyboard.update(*event);
+            app->on_event(*event);
+            handle_event(*event, window, show_debug_info, close_requested);
         }
         auto dt = clock.restart();
 
@@ -148,6 +151,10 @@ int main()
         // --------------------------
         GUI::render();
         window.display();
+        if (close_requested)
+        {
+            window.close();
+        }
     }
 
     // --------------------------
@@ -158,32 +165,29 @@ int main()
 
 namespace
 {
-    void handle_event(const sf::Event& e, sf::Window& window, bool& show_debug_info)
+    void handle_event(const sf::Event& event, sf::Window& window, bool& show_debug_info,
+                      bool& close_requested)
     {
-        switch (e.type)
+        if (event.is<sf::Event::Closed>())
         {
-            case sf::Event::Closed:
-                window.close();
-                break;
+            close_requested = true;
+        }
+        else if (auto* key = event.getIf<sf::Event::KeyPressed>())
+        {
 
-            case sf::Event::KeyReleased:
-                switch (e.key.code)
-                {
-                    case sf::Keyboard::Escape:
-                        window.close();
-                        break;
+            switch (key->code)
+            {
+                case sf::Keyboard::Key::Escape:
+                    close_requested = true;
+                    break;
 
-                    case sf::Keyboard::F1:
-                        show_debug_info = !show_debug_info;
-                        break;
+                case sf::Keyboard::Key::F1:
+                    show_debug_info = !show_debug_info;
+                    break;
 
-                    default:
-                        break;
-                }
-                break;
-
-            default:
-                break;
+                default:
+                    break;
+            }
         }
     }
 } // namespace

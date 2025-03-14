@@ -69,25 +69,25 @@ void PerspectiveCamera::free_controller_input(const Keyboard& keyboard, sf::Time
 
     // Keyboard Input
     glm::vec3 move{0.0f};
-    if (keyboard.is_key_down(sf::Keyboard::W))
+    if (keyboard.is_key_down(sf::Keyboard::Key::W))
     {
         move += forward_vector(transform.rotation);
     }
-    else if (keyboard.is_key_down(sf::Keyboard::S))
+    else if (keyboard.is_key_down(sf::Keyboard::Key::S))
     {
         move += backward_vector(transform.rotation);
     }
 
-    if (keyboard.is_key_down(sf::Keyboard::A))
+    if (keyboard.is_key_down(sf::Keyboard::Key::A))
     {
         move += left_vector(transform.rotation);
     }
-    else if (keyboard.is_key_down(sf::Keyboard::D))
+    else if (keyboard.is_key_down(sf::Keyboard::Key::D))
     {
         move += right_vector(transform.rotation);
     }
 
-    if (keyboard.is_key_down(sf::Keyboard::LShift))
+    if (keyboard.is_key_down(sf::Keyboard::Key::LShift))
     {
         move *= 10.0f;
     }

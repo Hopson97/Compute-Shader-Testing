@@ -1,9 +1,12 @@
 #pragma once
 
-#include <SFML/System/Clock.hpp>
 #include <deque>
 #include <map>
 #include <string>
+
+#include <SFML/System/Clock.hpp>
+#include <SFML/System/Time.hpp>
+
 
 template <typename T, int S>
 struct CircularQueue

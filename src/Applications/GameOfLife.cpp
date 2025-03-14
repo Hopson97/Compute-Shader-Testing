@@ -12,19 +12,18 @@ bool GameOfLife::on_init(sf::Window& window)
         return false;
     }
 
-    sf::Image image;
-    image.create(window.getSize().x, window.getSize().y);
+    sf::Image image(window.getSize());
     for (int y = 0; y < static_cast<int>(image.getSize().y); y++)
     {
         for (int x = 0; x < static_cast<int>(image.getSize().x); x++)
         {
-            image.setPixel(x, y, rand() % 50 > 20 ? sf::Color::Black : sf::Color::White);
+            sf::Vector2u coords{static_cast<unsigned>(x), static_cast<unsigned>(y)};
+            image.setPixel(coords, rand() % 50 > 20 ? sf::Color::Black : sf::Color::White);
         }
     }
 
     // Set up the double buffer
-    if (!screen_texture_.load_from_image(image, 1, TEXTURE_PARAMS_NEAREST,
-                                         TextureInternalFormat::RGBA, TextureFormat::RGBA32F))
+    if (!screen_texture_.load_from_image(image, 1, TEXTURE_PARAMS_NEAREST, TextureFormat::RGBA32F))
     {
         return false;
     }

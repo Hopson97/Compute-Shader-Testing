@@ -113,19 +113,17 @@ GLuint Texture2D::create_depth_texture(GLsizei width, GLsizei height)
     return id;
 }
 
-bool Texture2D::load_from_image(const sf::Image& image, GLsizei levels, TextureParameters filters,
-                                TextureInternalFormat internal_format, TextureFormat format)
+bool Texture2D::load_from_memory(const void* data, GLsizei width, GLsizei height, GLsizei levels,
+                                 TextureParameters filters, TextureInternalFormat internal_format,
+                                 TextureFormat format)
 {
-    const auto w = image.getSize().x;
-    const auto h = image.getSize().y;
-    const auto data = image.getPixelsPtr();
 
     // Allocate the storage
-    glTextureStorage2D(id, levels, static_cast<GLenum>(format), w, h);
+    glTextureStorage2D(id, levels, static_cast<GLenum>(format), width, height);
 
     // Upload the data
-    glTextureSubImage2D(id, 0, 0, 0, w, h, static_cast<GLenum>(internal_format), GL_UNSIGNED_BYTE,
-                        data);
+    glTextureSubImage2D(id, 0, 0, 0, width, height, static_cast<GLenum>(internal_format),
+                        GL_UNSIGNED_BYTE, data);
 
     if (filters.min_filter == TextureMinFilter::LinearMipmapLinear ||
         filters.min_filter == TextureMinFilter::LinearMipmapNearest)
@@ -138,18 +136,26 @@ bool Texture2D::load_from_image(const sf::Image& image, GLsizei levels, TextureP
     return true;
 }
 
+bool Texture2D::load_from_image(const sf::Image& image, GLsizei levels, TextureParameters filters,
+                                TextureFormat format)
+{
+    const auto w = image.getSize().x;
+    const auto h = image.getSize().y;
+    const auto data = image.getPixelsPtr();
+
+    return load_from_memory(data, w, h, levels, filters, TextureInternalFormat::RGBA, format);
+}
+
 bool Texture2D::load_from_file(const std::filesystem::path& path, GLsizei levels,
                                bool flip_vertically, bool flip_horizontally,
-                               TextureParameters filters, TextureInternalFormat internal_format,
-                               TextureFormat format)
+                               TextureParameters filters, TextureFormat format)
 {
     sf::Image image;
     if (!load_image_from_file(path, flip_vertically, flip_horizontally, image))
     {
         return false;
     }
-
-    return load_from_image(image, levels, filters, internal_format, format);
+    return load_from_image(image, levels, filters, format);
 }
 
 bool Texture2D::is_loaded() const

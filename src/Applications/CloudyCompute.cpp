@@ -11,7 +11,8 @@ bool CloudyCompute::on_init(sf::Window& window)
     window_ = &window;
     camera_.init(window.getSize().x, window.getSize().y, 90);
 
-    if (!cloud_compute_shader_.load_stage("assets/shaders/CloudyCompute.glsl", ShaderType::Compute) ||
+    if (!cloud_compute_shader_.load_stage("assets/shaders/CloudyCompute.glsl",
+                                          ShaderType::Compute) ||
         !cloud_compute_shader_.link_shaders())
     {
         return false;
@@ -27,6 +28,16 @@ bool CloudyCompute::on_init(sf::Window& window)
     // Set up the compute shader output texture
     screen_texture_.create(window.getSize().x, window.getSize().y, 1, TEXTURE_PARAMS_NEAREST,
                            TextureFormat::RGBA32F);
+
+    noise_texture_.load_from_file("assets/textures/rgba-noise-medium.png", 1, false, false,
+                                  {
+                                      .min_filter = TextureMinFilter::Linear,
+                                      .mag_filter = TextureMagFilter::Linear,
+                                      .wrap_s = TextureWrap::Repeat,
+                                      .wrap_t = TextureWrap::Repeat,
+                                  },
+                                  TextureFormat::RGBA32F);
+
     return true;
 }
 
@@ -41,13 +52,16 @@ void CloudyCompute::on_render(sf::Window& window)
     // Run the compute shader to create a texture
     gl::disable(gl::Capability::DepthTest);
 
-
     cloud_compute_shader_.bind();
-    cloud_compute_shader_.set_uniform("inv_projection", glm::inverse(camera_.get_projection_matrix()));
+    cloud_compute_shader_.set_uniform("inv_projection",
+                                      glm::inverse(camera_.get_projection_matrix()));
     cloud_compute_shader_.set_uniform("inv_view", glm::inverse(camera_.get_view_matrix()));
     cloud_compute_shader_.set_uniform("position", camera_.transform.position);
+    cloud_compute_shader_.set_uniform("time", clock_.getElapsedTime().asSeconds());
 
     glBindImageTexture(0, screen_texture_.id, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA32F);
+    glBindImageTexture(1, noise_texture_.id, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA32F);
+    noise_texture_.bind(1);
     gl::dispatch_compute(std::ceil(window.getSize().x / 8), std::ceil(window.getSize().y / 4), 1);
     glMemoryBarrier(GL_ALL_BARRIER_BITS);
 
@@ -72,9 +86,11 @@ void CloudyCompute::on_render(sf::Window& window)
 
 void CloudyCompute::on_event(sf::Event event)
 {
-    if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::L)
+    if (auto key = event.getIf<sf::Event::KeyReleased>())
     {
-        mouse_locked_ = !mouse_locked_;
-        std::cout << "Mouse state: " << (mouse_locked_ ? "Locked" : "Unlocked") << '\n';
+        if (key->code == sf::Keyboard::Key::L)
+        {
+            mouse_locked_ = !mouse_locked_;
+        }
     }
 }

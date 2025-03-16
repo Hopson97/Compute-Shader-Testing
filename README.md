@@ -1,10 +1,8 @@
 # Compute Shaders
 
-OpenGL template project with wrappers around the basic OpenGL objects.
+Compute shader testing for learning.
 
-This contains two examples: Application and ApplicationMinimal.
-
-Application has lighting, while ApplicationMinimal is just simple scene with no lighting.
+Video: https://www.youtube.com/watch?v=p5Iev026dCY&list=RDp5Iev026dCY&start_radio=1
 
 ## Building and Running
 

@@ -137,13 +137,13 @@ bool Texture2D::load_from_memory(const void* data, GLsizei width, GLsizei height
 }
 
 bool Texture2D::load_from_image(const sf::Image& image, GLsizei levels, TextureParameters filters,
-                                TextureFormat format)
+                                TextureFormat format, TextureInternalFormat internal_format)
 {
     const auto w = image.getSize().x;
     const auto h = image.getSize().y;
     const auto data = image.getPixelsPtr();
 
-    return load_from_memory(data, w, h, levels, filters, TextureInternalFormat::RGBA, format);
+    return load_from_memory(data, w, h, levels, filters, internal_format, format);
 }
 
 bool Texture2D::load_from_file(const std::filesystem::path& path, GLsizei levels,

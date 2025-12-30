@@ -35,6 +35,7 @@ class Shader
 
     void set_uniform(const std::string& name, int value);
     void set_uniform(const std::string& name, float value);
+    void set_uniform(const std::string& name, const glm::ivec2& vector);
     void set_uniform(const std::string& name, const glm::vec2& vector);
     void set_uniform(const std::string& name, const glm::vec3& vector);
     void set_uniform(const std::string& name, const glm::vec4& vector);

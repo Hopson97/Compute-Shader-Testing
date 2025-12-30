@@ -9,6 +9,7 @@
 #include "Applications/CubeCompute.h"
 #include "Applications/GameOfLife.h"
 #include "Applications/SignedDistanceFractals.h"
+#include "Applications/SandSimulation.h"
 #include "GUI.h"
 #include "Graphics/OpenGL/GLUtils.h"
 #include "Util/Keyboard.h"
@@ -58,7 +59,8 @@ int main()
     bool show_debug_info = false;
 
     // std::unique_ptr<Application> app = std::make_unique<GameOfLife>();
-    std::unique_ptr<Application> app = std::make_unique<CloudyCompute>();
+    //std::unique_ptr<Application> app = std::make_unique<CloudyCompute>();
+    std::unique_ptr<Application> app = std::make_unique<SandSimulation>();
     // std::unique_ptr<Application> app = std::make_unique<CubeCompute>();
     //  std::unique_ptr<Application> app = std::make_unique<SignedDistanceFractals>();
     if (!app->init(window))
@@ -91,14 +93,6 @@ int main()
             app->on_update(window, keyboard, dt);
             update_profiler.end_section();
         }
-        /*
-        // Fixed-rate update
-        {
-            auto& fixed_update_profiler = profiler.begin_section("Fixed Update");
-            updater.update([&](sf::Time dt) { app.on_fixed_update(dt); });
-            fixed_update_profiler.end_section();
-        }
-        */
 
         // Render
         {
@@ -128,15 +122,20 @@ int main()
                 update = true;
                 app = std::make_unique<CubeCompute>();
             }
-            if (ImGui::Button("SignedDistanceFields"))
+            if (ImGui::Button("Signed Distance Fractals"))
             {
                 update = true;
                 app = std::make_unique<SignedDistanceFractals>();
             }
-            if (ImGui::Button("ClodyCompute"))
+            if (ImGui::Button("Cloudy Compute"))
             {
                 update = true;
                 app = std::make_unique<CloudyCompute>();
+            }
+            if (ImGui::Button("Sand Simulation"))
+            {
+                update = true;
+                app = std::make_unique<SandSimulation>();
             }
 
             if (update && !app->init(window))

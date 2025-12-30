@@ -12,12 +12,14 @@ enum class TextureInternalFormat
 {
     RGB = GL_RGB,
     RGBA = GL_RGBA,
+    RGBA_I = GL_RGBA_INTEGER,
 };
 
 enum class TextureFormat
 {
     RGB8 = GL_RGB8,
     RGBA8 = GL_RGBA8,
+    RGBA8UI = GL_RGBA8UI,
     RGBA16F = GL_RGBA16F,
     RGBA32F = GL_RGBA32F
 };
@@ -125,7 +127,9 @@ struct Texture2D : public GLTextureResource
 
     [[nodiscard]] bool load_from_image(const sf::Image& image, GLsizei levels,
                                        TextureParameters filters = TEXTURE_PARAMS_MIPMAP,
-                                       TextureFormat format = TextureFormat::RGBA8);
+                                       TextureFormat format = TextureFormat::RGBA8,
+                                       TextureInternalFormat internal_format
+                                       = TextureInternalFormat::RGBA);
 
     [[nodiscard]] bool load_from_file(const std::filesystem::path& path, GLsizei levels,
                                       bool flip_vertically, bool flip_horizontally,

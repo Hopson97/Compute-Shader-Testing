@@ -159,6 +159,7 @@
     <ClCompile Include="src\Applications\CloudyCompute.cpp" />
     <ClCompile Include="src\Applications\CubeCompute.cpp" />
     <ClCompile Include="src\Applications\GameOfLife.cpp" />
+    <ClCompile Include="src\Applications\SandSimulation.cpp" />
     <ClCompile Include="src\Applications\SignedDistanceFractals.cpp" />
     <ClCompile Include="src\Graphics\Camera.cpp" />
     <ClCompile Include="src\Graphics\OpenGL\Framebuffer.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="src\Applications\CloudyCompute.h" />
     <ClInclude Include="src\Applications\CubeCompute.h" />
     <ClInclude Include="src\Applications\GameOfLife.h" />
+    <ClInclude Include="src\Applications\SandSimulation.h" />
     <ClInclude Include="src\Applications\SignedDistanceFractals.h" />
     <ClInclude Include="src\Graphics\Camera.h" />
     <ClInclude Include="src\Graphics\OpenGL\BufferObject.h" />

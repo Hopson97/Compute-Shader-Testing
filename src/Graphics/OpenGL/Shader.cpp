@@ -6,7 +6,6 @@
 
 #include "../../Util/Util.h"
 
-
 namespace
 {
     enum class IVParameter
@@ -155,6 +154,12 @@ void Shader::set_uniform(const std::string& name, int value)
 void Shader::set_uniform(const std::string& name, float value)
 {
     glProgramUniform1f(program_, get_uniform_location(name), value);
+}
+
+void Shader::set_uniform(const std::string& name, const glm::ivec2& vector)
+{
+
+    glProgramUniform2iv(program_, get_uniform_location(name), 1, glm::value_ptr(vector));
 }
 
 void Shader::set_uniform(const std::string& name, const glm::vec2& vector)

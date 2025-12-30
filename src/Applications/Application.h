@@ -23,7 +23,8 @@ class Application
     {
     }
 
-    virtual void on_update(const sf::Window& window, const Keyboard& keyboard, sf::Time dt)
+    virtual void on_update([[maybe_unused]] const sf::Window& window,
+                           [[maybe_unused]] const Keyboard& keyboard, [[maybe_unused]] sf::Time dt)
     {
     }
 

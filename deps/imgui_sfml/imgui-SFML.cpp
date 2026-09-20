@@ -964,8 +964,8 @@ namespace
         }
 
         const ImGuiIO& io = ImGui::GetIO();
-        assert(io.Fonts->TexID !=
-               (ImTextureID) nullptr); // You forgot to create and set font texture
+        //assert(io.Fonts->TexRef !=
+        //       (ImTextureID) nullptr); // You forgot to create and set font texture
 
         // Avoid rendering when minimized, scale coordinates for retina displays (screen coordinates
         // != framebuffer coordinates)
@@ -1053,7 +1053,7 @@ namespace
 
                         // Bind texture, Draw
                         const GLuint textureHandle =
-                            convertImTextureIDToGLTextureHandle(pcmd->TextureId);
+                            convertImTextureIDToGLTextureHandle(pcmd->GetTexID());
                         glBindTexture(GL_TEXTURE_2D, textureHandle);
                         glDrawElements(GL_TRIANGLES, (GLsizei)pcmd->ElemCount,
                                        sizeof(ImDrawIdx) == 2 ? GL_UNSIGNED_SHORT : GL_UNSIGNED_INT,

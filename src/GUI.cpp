@@ -9,7 +9,7 @@ namespace GUI
 {
     bool init(sf::Window* window)
     {
-        return ImGui::SFML::Init(*window, sf::Vector2f{window->getSize()}) &&
+        return ImGui::SFML::Init(*window, sf::Vector2f{window->getSize()}, false) &&
                ImGui_ImplOpenGL3_Init();
     }
 

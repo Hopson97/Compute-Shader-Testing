@@ -178,7 +178,6 @@
   <ItemGroup>
     <None Include=".clang-format" />
     <None Include=".gitignore" />
-    <None Include="deps\imgui_sfml\LICENSE" />
     <None Include="imgui.ini" />
     <None Include="README.md" />
     <None Include="scripts\build.sh" />
@@ -188,6 +187,7 @@
   <ItemGroup>
     <ClInclude Include="deps\glad\glad.h" />
     <ClInclude Include="deps\glad\khrplatform.h" />
+    <ClInclude Include="deps\imgui_sfml\imconfig-SFML.h" />
     <ClInclude Include="deps\imgui_sfml\imgui-SFML.h" />
     <ClInclude Include="deps\imgui_sfml\imgui-SFML_export.h" />
     <ClInclude Include="deps\imgui_sfml\imgui_impl_opengl3.h" />
@@ -219,7 +219,6 @@
     <Text Include="CMakeLists.txt" />
     <Text Include="deps\CMakeLists.txt" />
     <Text Include="deps\glad\CMakeLists.txt" />
-    <Text Include="deps\imgui_sfml\CMakeLists.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
